@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/user_create.css' %}">
+
+<div class="user_create">
+<form action="" method="POST">
+    <table class="table table-borderless">
+        <tr>
+            <td>学籍番号</td>
+            <td>{{ form.user_id }}</td>
+        </tr>
+        <tr>
+            <td>名前</td>
+            <td>{{ form.user_name }}</td>
+        </tr>
+        <tr>
+            <td>部屋番号</td>
+            <td>{{ form.room_id }}</td>
+        </tr>
+    </table>
+    <div class="button_wrapper" align="right">
+        <button type="submit" class="btn btn-dark" >登録</button>
+        {% csrf_token %}
+    </div>
+</form>
+</div>
+
+{% endblock %}

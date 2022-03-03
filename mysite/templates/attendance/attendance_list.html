@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/attendance_list.css' %}">
+
+<div class="attend_info">
+
+    <table class="table table-hover">
+    <thead>
+        <tr>
+            <th>学籍番号</th>
+            <th>名前</th>
+            <th>部屋番号</th>
+            <th>状態</th>
+            <th>最終更新日時</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in labattendancetb_list %}
+        <tr>
+            <td>{{ i.user_id }}</td>
+            <td>{{ i.user_name }}</td>
+            <td>{{ i.room_id }}</td>
+            {% if i.status == "attend" %}
+                <td>〇</td>
+            {% else %}
+                <td>✕</td>
+            {% endif %}
+            <td>{{ i.update_time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+.attend_info {
+    padding: 10px 10px 10px 10px;
+}
+
+.table > thead > tr{
+    border:2px solid #a5bdb3;
+    background-color: #b1c5bd;
+}
+
+.table > tbody > tr{
+    border:2px solid #bdcfc8;
+}
