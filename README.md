@@ -3,10 +3,18 @@
 
 ## Git branch
 - master
+- developer (バグ修正後マージ)
 
-## lib File
+# Requirement
+* Django 3.0.6
+* mySQL Ver 15.1 Distrib 10.3.31-MariaDB
+* Python 3.7.3
 
-## json File
+## Django
+
+## MySQL
+
+## CardReader
 
 ## commit rule
 
@@ -28,8 +36,6 @@
 🚧  :construction: 未完成
 🔥  :fire: ファイル消去
 🚚  :truck: ファイル移動
-🐳  :whale: Docker
-🐧  :penguin: Linux
 🔧  :wrench: conf file
 🔀  :twisted_rightwards_arrows: マージ
 ```
