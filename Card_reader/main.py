@@ -4,13 +4,15 @@ import manage_db
 import play
 import pymysql.cursors
 import card_type
+import timeout
 
 def connected(tag):
     if isinstance(tag, nfc.tag.tt3.Type3Tag):
         try:
             student_id = nit_reader.read_card(tag)
-            card_type.change_type(student_id)
-            manage_db.search_data(student_id)
+            c_type = card_type.change_type(student_id)
+            timeout_count = timeout.check_timeout(c_type)
+            manage_db.search_data(student_id,timeout_count)
         except Exception as e:
             print("Error:%s" % e)
     else:
