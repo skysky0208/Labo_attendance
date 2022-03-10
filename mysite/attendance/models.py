@@ -14,6 +14,7 @@ class LabAttendanceTb(models.Model):
     user_name = models.CharField(max_length=100, blank=True, null=True)
     room_id = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
     status = models.CharField(max_length=100, blank=True, null=True)
+    comment = models.CharField(max_length=100, blank=True, null=True)
     update_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:

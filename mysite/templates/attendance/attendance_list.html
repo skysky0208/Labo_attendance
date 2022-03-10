@@ -13,6 +13,8 @@
             <th>名前</th>
             <th>部屋番号</th>
             <th>状態</th>
+            <th>コメント</th>
+            <th></th>
             <th>最終更新日時</th>
         </tr>
     </thead>
@@ -21,12 +23,34 @@
         <tr>
             <td>{{ i.user_id }}</td>
             <td>{{ i.user_name }}</td>
-            <td>{{ i.room_id }}</td>
-            {% if i.status == "attend" %}
-                <td>〇</td>
+
+            {% if i.room_id is None %}
+                <td></td>
             {% else %}
-                <td>✕</td>
+                <td>{{ i.room_id }}</td>
             {% endif %}
+
+            {% if i.status == "attend" %}
+                <td>在室</td>
+            {% elif i.status == "lab out" %}
+                <td>外出</td>
+            {% elif i.status == "absent" %}
+                <td>退室</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+
+            {% if i.comment is None %}
+                <td></td>
+            {% else %}
+                <td>{{ i.comment }}</td>
+            {% endif %}
+
+            <td>
+                <a href="{% url 'attendance:comment_update' i.pk %}" class="btn btn-outline-secondary py-0" role="button" style="color:#4b6d6e; border-color: #4b6d6e" >
+                    編集
+                </a>
+            </td>
             <td>{{ i.update_time }}</td>
         </tr>
         {% endfor %}
