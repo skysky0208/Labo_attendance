@@ -11,8 +11,22 @@
 * Python 3.7.3
 
 ## Django
+### ページ構成
+- attendance/attendance_list　出席情報閲覧ページ(トップページ)
+- attendance/user_create　ユーザ登録ページ
+- attendance/comment_update　コメント編集ページ
+### CSS
+- Boostrapを用いて体裁を整える
+- それぞれのhtmlファイルに対応したcssファイル
 
 ## MySQL
+データベースのテーブルはuser_id, user_name, status, update_time, room_id, comment で構成
+- user_id (Integer) : 学籍番号 (プライマリキー)
+- user_name (Char[100]) : 名前
+- status (Char[100]) : 入室、退室、外出の状態
+- update_time (DateTime): 最終更新日時
+- room_id (Char[100]) : 入室している部屋番号
+- comment (Char[100]): 自由に設定できるコメント
 
 ## CardReader
 
