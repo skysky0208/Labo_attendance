@@ -47,7 +47,7 @@ $ python3 manage.py runserver
 
 ## MySQL
 ### 導入手順
-以下のサイトを参考  
+以下のサイトを参考
 https://www.raspberrypirulo.net/entry/mariadb-install
 
 1. MySQLデータベース(Mariadb)のインストール
@@ -108,27 +108,29 @@ MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL P
 - calendar_id (Char[100]) : カレンダー連携のためのID
 <br />
 
-## ラズパイの音関連
-### simpleaudioライブラリのインストール
+## Speaker・CardReader
+### 初期設定
+1. simpleaudioライブラリ，nfcpyライブラリのインストール
 ```
 $ sudo apt-get install -y python3-pip libasound2-dev
 $ pip3 install simpleaudio
+$ sudo pip3 install -U nfcpy
+$ pip3 list | grep nfcpysi
 ```
 
-### ラズパイの音声出力をイヤホンジャックに変更
+2. ラズパイの音声出力をイヤホンジャックに変更
+33行目あたりを以下のように変更
 ```
 $ sudo nano /boot/config.txt
-```
-実行後、33行目あたりを以下のように変更
-```
+------------------------------------
 # 変更前
-#hdmi_drive=2
+# hdmi_drive=2
 
 # 変更後
 hdmi_drive=1
 ```
 
-### wavファイルをmacからラズパイにコピー
+3. wavファイルをmacからラズパイにコピー
 mac側で転送元のファイルがあるディレクトリに移動
 ```
 $ scp error.wav pi@ラズパイのIPアドレス:/home/pi/Music
@@ -136,33 +138,17 @@ $ scp success.wav pi@ラズパイのIPアドレス:/home/pi/Music
 ```
 <br />
 
-## CardReader
-### nfcpyライブラリのインストール
-```
-$ sudo pip3 install -U nfcpy
-$ pip3 list | grep nfcpy
-```
-
-### main.py
-実際に実行するプログラム
-```
-$ python3 main.py
-```
-実行後はカードをかざすだけ
-<br />
-
-## プログラムの自動起動
-### 実装
+### 自動実行設定
 以下のサイトを参考  
 https://rikoubou.hatenablog.com/entry/2020/09/18/165936
-```
-$ sudo nano /etc/rc.local
-```
 ファイルの最後の'exit 0'の前に以下を記述
 ```
+$ sudo nano /etc/rc.local
+--------------------------------------------
 python3 /home/pi/Lab_attendance/Labo_attendance/Card_reader/16_321/main.py #追加部分
 ```
 記述できたら上書き保存し、Raspberry Piを再起動
+
 <br />
 
 ## Requirement
@@ -173,6 +159,9 @@ python3 /home/pi/Lab_attendance/Labo_attendance/Card_reader/16_321/main.py #追�
 * google-api-python-client 1.12.10
 * google-auth-httplib2     0.1.0
 * google-auth-oauthlib     0.4.1
+* nfcpy     1.0.3 
+* simpleaudio   1.0.4 
+
 
 # commit rule
 
