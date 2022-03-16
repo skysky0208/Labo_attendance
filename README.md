@@ -93,8 +93,9 @@ MariaDB [(none)]> USE Lab_attendance; #データベース名
 
 選択したデータベースにテーブルを作成
 ```
-MariaDB [Lab_attendance]> CREATE TABLE テーブル名 (カラム名1 データ型1, カラム名2 データ型2, ……);
+MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL PRIMARY KEY, user_name VARCHAR(100), status VARCHAR(100), update_time DATETIME, room_id VARCHAR(100), comment TEXT, calendar_id VARCHAR(100));
 ```
+作成したテーブルの詳細は以下を参照
 
 ### データベース（Lab_attendance_tb）
 データベースのテーブルはuser_id, user_name, status, update_time, room_id, comment, calendar_id で構成
@@ -107,7 +108,62 @@ MariaDB [Lab_attendance]> CREATE TABLE テーブル名 (カラム名1 データ�
 - calendar_id (Char[100]) : カレンダー連携のためのID
 <br />
 
+## ラズパイの音関連
+### simpleaudioライブラリのインストール
+```
+$ sudo apt-get install -y python3-pip libasound2-dev
+$ pip3 install simpleaudio
+```
+###　ラズパイの音声出力をイヤホンジャックに変更
+```
+$ sudo nano /boot/config.txt
+```
+実行後、33行目あたりを以下のように変更
+```
+# 変更前
+#hdmi_drive=2
+
+# 変更後
+hdmi_drive=1
+```
+
+### wavファイルをmacからラズパイにコピー
+mac側で転送元のファイルがあるディレクトリに移動
+```
+$ scp error.wav pi@ラズパイのIPアドレス:/home/pi/Music
+$ scp success.wav pi@ラズパイのIPアドレス:/home/pi/Music
+```
+<br />
+
 ## CardReader
+### nfcpyライブラリのインストール
+```
+$ sudo pip3 install -U nfcpy
+$ pip3 list | grep nfcpy
+```
+
+### NFCリーダーの認識
+```
+sudo python3 index.py
+```
+
+### dump.py
+カードリーダにカードをおいて実行
+```
+python3 dump.py
+```
+使用するカードの番号が書かれているサービスコードを確認
+名工大の学籍番号のサービスコードは0x400B
+
+### manage_db.py
+使用する部屋に応じて、プログラムを変更
+
+### main.py
+実際に実行するプログラム
+```
+python3 main.py
+```
+実行後はカードをかざすだけ
 <br />
 
 ## Requirement
