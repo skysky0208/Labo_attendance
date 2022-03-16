@@ -53,8 +53,8 @@ https://www.raspberrypirulo.net/entry/mariadb-install
 1. MySQLデータベース(Mariadb)のインストール
 ```
 $ sudo apt-get install mariadb-server
+　# 途中でrootのパスを入力
 ```
-途中でrootのパスを入力
 
 2. unix_sokectプラグインの無効化
 ```
@@ -75,7 +75,6 @@ $ sudo systemctl restart mysql
 
 ### データベースの作成
 1. データベースの追加
-"Lab_attendance"という名前のデータベースを追加
 ```
 MariaDB [(none)]> CREATE DATABASE データベース名(今回はLab_attendance);
 ```
@@ -85,8 +84,7 @@ MariaDB [(none)]> CREATE DATABASE データベース名(今回はLab_attendance)
 MariaDB [(none)]> SHOW DATABASES;
 ```
 
-3. テーブルの作成
-使用するデータベースを選択
+3. 使用するデータベースの選択
 ```
 MariaDB [(none)]> USE Lab_attendance; #データベース名
 ```
@@ -119,11 +117,10 @@ $ pip3 list | grep nfcpysi
 ```
 
 2. ラズパイの音声出力をイヤホンジャックに変更
-33行目あたりを以下のように変更
 ```
 $ sudo nano /boot/config.txt
 ------------------------------------
-# 変更前
+# 変更前 (33行目あたり)
 # hdmi_drive=2
 
 # 変更後
@@ -140,7 +137,7 @@ $ scp success.wav pi@ラズパイのIPアドレス:/home/pi/Music
 
 ### 自動実行設定
 以下のサイトを参考  
-https://rikoubou.hatenablog.com/entry/2020/09/18/165936
+https://rikoubou.hatenablog.com/entry/2020/09/18/165936  
 ファイルの最後の'exit 0'の前に以下を記述
 ```
 $ sudo nano /etc/rc.local
