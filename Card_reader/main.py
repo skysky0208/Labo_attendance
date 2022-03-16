@@ -13,10 +13,13 @@ def connected(tag):
             c_type = card_type.change_type(student_id)
             timeout_count = timeout.check_timeout(c_type)
             manage_db.search_data(student_id,timeout_count)
+            play.playsound()
         except Exception as e:
             print("Error:%s" % e)
+            play.playerrorsound()
     else:
         print("Error:tag isn't Type3Tag")
+        play.playerrorsound()
 
     #値をTrueで返すと触れて離すまでの間、一回だけ処理を行う
     return True
@@ -27,7 +30,6 @@ def main():
     while True:
         #学生証を読み取るまで待機
         clf.connect(rdwr={'on-connect': connected,})
-        play.playsound()
 
 try:
     main()

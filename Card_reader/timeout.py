@@ -15,19 +15,19 @@ def check_timeout(c_type):
     with connection.cursor() as cursor:
         if c_type =='EXIT_CARD':
             # 日時更新
-            sql = "UPDATE Lab_attendance_tb SET update_time = CAST(NOW() as DATETIME) WHERE user_id = %s"
-            cursor.execute(sql, 31114153)
+            sql = "UPDATE Lab_attendance_tb SET update_time = CAST(NOW() as DATETIME) WHERE user_name = %s"
+            cursor.execute(sql, 'EXIT CARD')
             connection.commit()
             timeout_count = 0
         else:
-            # update_timeを取得
-            sql = "SELECT DATE_FORMAT(update_time, %s) AS update_time FROM Lab_attendance_tb WHERE user_id = %s"
-            cursor.execute(sql, ('%H%i%s',31114153))
+            # EXIT_CARDのupdate_timeを取得
+            sql = "SELECT DATE_FORMAT(update_time, %s) AS update_time FROM Lab_attendance_tb WHERE user_name = %s"
+            cursor.execute(sql, ('%H%i%s','EXIT CARD'))
             update_time = cursor.fetchone()['update_time']
 
-            # 日時更新
-            sql = "UPDATE Lab_attendance_tb SET update_time = CAST(NOW() as DATETIME) WHERE user_id = %s"
-            cursor.execute(sql, 31114153)
+            # EXIT_CARDの日時更新
+            sql = "UPDATE Lab_attendance_tb SET update_time = CAST(NOW() as DATETIME) WHERE user_name = %s"
+            cursor.execute(sql, 'EXIT CARD')
             connection.commit()
 
             # 現在日時を取得
@@ -37,7 +37,7 @@ def check_timeout(c_type):
 
             cursor.close()
 
-            # 現在日時と最終更新日時を比較
+            # 現在日時とEXIT_CARDの最終更新日時を比較
             # 日時を秒に変換
             update_time_second = total_second(update_time)
             now_time_second = total_second(str(now_time))

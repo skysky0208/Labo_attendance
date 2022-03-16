@@ -1,5 +1,6 @@
 import pymysql.cursors
 import nit_reader
+import play
 
 
 # Connect to the database
@@ -35,8 +36,14 @@ def search_data(student_id,timeout_count):
         # DBにstudent_idが登録されていない場合
         if match_id is None:
             print("Error:Unregistered data")
+            play.playerrorsound()
         # DBにstudent_idが登録されている場合
         else: 
+            # 日時更新
+            sql = "UPDATE Lab_attendance_tb SET update_time = CAST(NOW() as DATETIME) WHERE user_id = %s"
+            cursor.execute(sql, student_id)
+            connection.commit()
+
             # EXIT_CARDのタイムアウト処理
             if timeout_count == 1:
                 sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_name = 'EXIT CARD'"
