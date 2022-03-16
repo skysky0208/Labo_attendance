@@ -46,6 +46,56 @@ $ python3 manage.py runserver
 <br />
 
 ## MySQL
+### 導入手順
+以下のサイトを参考
+https://www.raspberrypirulo.net/entry/mariadb-install
+
+1. MySQLデータベース(Mariadb)のインストール
+```
+$ sudo apt-get install mariadb-server
+```
+途中でrootのパスを入力
+
+2. unix_sokectプラグインの無効化
+```
+$ sudo mysql -u root
+MariaDB [(none)]> USE mysql;
+MariaDB [mysql]> UPDATE user SET plugin='' WHERE User='root';
+MariaDB [mysql]> exit
+$ sudo systemctl restart mysql
+```
+
+3. rootのパスワード設定
+```
+$ mysql -u root
+MariaDB [(none)]> update mysql.user set password=password('設定したいパスワード') where user = 'root';
+MariaDB [mysql]> exit
+$ sudo systemctl restart mysql
+```
+
+### データベースの作成
+1. データベースの追加
+"Lab_attendance"という名前のデータベースを追加
+```
+MariaDB [(none)]> CREATE DATABASE データベース名(今回はLab_attendance);
+```
+
+作成したデータベースを確認
+```
+MariaDB [(none)]> SHOW DATABASES;
+```
+
+2. テーブルの作成
+使用するデータベースを選択
+```
+MariaDB [(none)]> USE Lab_attendance; #データベース名
+```
+
+選択したデータベースにテーブルを作成
+```
+MariaDB [Lab_attendance]> CREATE TABLE テーブル名 (カラム名1 データ型1, カラム名2 データ型2, ……);
+```
+
 ### データベース（Lab_attendance_tb）
 データベースのテーブルはuser_id, user_name, status, update_time, room_id, comment, calendar_id で構成
 - user_id (Integer) : 学籍番号 (プライマリキー)
@@ -58,15 +108,6 @@ $ python3 manage.py runserver
 <br />
 
 ## CardReader
-<br />
-
-## GoogleCalendar連携
-### 導入手順
-1. Google client library インストール
-```
-$ pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
-```
-2. 認証し，credentianls.jsonを同ディレクトリに配置する
 <br />
 
 ## Requirement
