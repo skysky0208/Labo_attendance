@@ -47,7 +47,7 @@ $ python3 manage.py runserver
 
 ## MySQL
 ### 導入手順
-以下のサイトを参考
+以下のサイトを参考  
 https://www.raspberrypirulo.net/entry/mariadb-install
 
 1. MySQLデータベース(Mariadb)のインストール
@@ -153,7 +153,7 @@ $ python3 main.py
 
 ## プログラムの自動起動
 ### 実装
-以下のサイトを参考
+以下のサイトを参考  
 https://rikoubou.hatenablog.com/entry/2020/09/18/165936
 ```
 $ sudo nano /etc/rc.local
