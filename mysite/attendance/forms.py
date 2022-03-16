@@ -9,7 +9,7 @@ class UserCreateForm(forms.ModelForm):
     class Meta:
         model = LabAttendanceTb
         # 入力するカラムを指定
-        fields = ('user_id', 'user_name', 'room_id') 
+        fields = ('user_id', 'user_name', 'room_id', 'calendar_id') 
 
 # コメント編集フォーム
 class CommentUpdateForm(forms.ModelForm):
@@ -18,5 +18,3 @@ class CommentUpdateForm(forms.ModelForm):
         model = LabAttendanceTb
         # 入力するカラムを指定
         fields = ('comment',) 
-
-
