@@ -54,7 +54,7 @@ https://www.raspberrypirulo.net/entry/mariadb-install
 ```
 $ sudo apt-get install mariadb-server
 ```
-途中でrootのパスを入力
+ 途中でrootのパスを入力
 
 2. unix_sokectプラグインの無効化
 ```
@@ -80,22 +80,22 @@ $ sudo systemctl restart mysql
 MariaDB [(none)]> CREATE DATABASE データベース名(今回はLab_attendance);
 ```
 
-作成したデータベースを確認
+2. 作成したデータベースを確認
 ```
 MariaDB [(none)]> SHOW DATABASES;
 ```
 
-2. テーブルの作成
+3. テーブルの作成
 使用するデータベースを選択
 ```
 MariaDB [(none)]> USE Lab_attendance; #データベース名
 ```
 
-選択したデータベースにテーブルを作成
+4. 選択したデータベースにテーブルを作成
 ```
 MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL PRIMARY KEY, user_name VARCHAR(100), status VARCHAR(100), update_time DATETIME, room_id VARCHAR(100), comment TEXT, calendar_id VARCHAR(100));
 ```
-作成したテーブルの詳細は以下を参照
+ 作成したテーブルの詳細は以下を参照
 
 ### データベース（Lab_attendance_tb）
 データベースのテーブルはuser_id, user_name, status, update_time, room_id, comment, calendar_id で構成
@@ -114,7 +114,8 @@ MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL P
 $ sudo apt-get install -y python3-pip libasound2-dev
 $ pip3 install simpleaudio
 ```
-###　ラズパイの音声出力をイヤホンジャックに変更
+
+### ラズパイの音声出力をイヤホンジャックに変更
 ```
 $ sudo nano /boot/config.txt
 ```
@@ -144,15 +145,15 @@ $ pip3 list | grep nfcpy
 
 ### NFCリーダーの認識
 ```
-sudo python3 index.py
+$ sudo python3 index.py
 ```
 
 ### dump.py
 カードリーダにカードをおいて実行
 ```
-python3 dump.py
+$ python3 dump.py
 ```
-使用するカードの番号が書かれているサービスコードを確認
+使用するカードの番号が書かれているサービスコードを確認  
 名工大の学籍番号のサービスコードは0x400B
 
 ### manage_db.py
@@ -161,7 +162,7 @@ python3 dump.py
 ### main.py
 実際に実行するプログラム
 ```
-python3 main.py
+$ python3 main.py
 ```
 実行後はカードをかざすだけ
 <br />
