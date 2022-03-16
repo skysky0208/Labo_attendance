@@ -54,7 +54,7 @@ https://www.raspberrypirulo.net/entry/mariadb-install
 ```
 $ sudo apt-get install mariadb-server
 ```
- 途中でrootのパスを入力
+途中でrootのパスを入力
 
 2. unix_sokectプラグインの無効化
 ```
@@ -95,7 +95,7 @@ MariaDB [(none)]> USE Lab_attendance; #データベース名
 ```
 MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL PRIMARY KEY, user_name VARCHAR(100), status VARCHAR(100), update_time DATETIME, room_id VARCHAR(100), comment TEXT, calendar_id VARCHAR(100));
 ```
- 作成したテーブルの詳細は以下を参照
+作成したテーブルの詳細は以下を参照
 
 ### データベース（Lab_attendance_tb）
 データベースのテーブルはuser_id, user_name, status, update_time, room_id, comment, calendar_id で構成
@@ -143,28 +143,26 @@ $ sudo pip3 install -U nfcpy
 $ pip3 list | grep nfcpy
 ```
 
-### NFCリーダーの認識
-```
-$ sudo python3 index.py
-```
-
-### dump.py
-カードリーダにカードをおいて実行
-```
-$ python3 dump.py
-```
-使用するカードの番号が書かれているサービスコードを確認  
-名工大の学籍番号のサービスコードは0x400B
-
-### manage_db.py
-使用する部屋に応じて、プログラムを変更
-
 ### main.py
 実際に実行するプログラム
 ```
 $ python3 main.py
 ```
 実行後はカードをかざすだけ
+<br />
+
+## プログラムの自動起動
+### 実装
+以下のサイトを参考
+https://rikoubou.hatenablog.com/entry/2020/09/18/165936
+```
+$ sudo nano /etc/rc.local
+```
+ファイルの最後の'exit 0'の前に以下を記述
+```
+python3 /home/pi/Lab_attendance/Labo_attendance/Card_reader/16_321/main.py #追加部分
+```
+記述できたら上書き保存し、Raspberry Piを再起動
 <br />
 
 ## Requirement
