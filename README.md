@@ -17,7 +17,7 @@ $ django-admin.py startproject プロジェクト名(今回はmysite)
 ```
 $ pip install pymysql
 $ pip freeze -l
-PyMySQL==0.9.2
+PyMySQL==0.10.1
 ```
 4. settings.pyのデータベース情報を変更
 ```python:setting.py
@@ -42,7 +42,7 @@ $ python3 manage.py migrate
 ```
 $ python3 manage.py runserver
 ```
-実行後 http://127.0.0.1:8000/attendance/attendance_list にアクセス
+実行後 http://127.0.0.1:8000/attendance/attendance_list にアクセス  
 <br />
 
 ## MySQL
@@ -60,10 +60,23 @@ $ python3 manage.py runserver
 ## CardReader
 <br />
 
+## GoogleCalendar連携
+### 導入手順
+1. Google client library インストール
+```
+$ pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+2. 認証し，credentianls.jsonを同ディレクトリに配置する
+<br />
+
 ## Requirement
 * Django 3.0.6
 * mySQL Ver 15.1 Distrib 10.3.31-MariaDB
 * Python 3.7.3
+* PyMySQL 0.10.1
+* google-api-python-client 1.12.10
+* google-auth-httplib2     0.1.0
+* google-auth-oauthlib     0.4.1
 
 # commit rule
 
