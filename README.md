@@ -137,14 +137,48 @@ $ scp success.wav pi@ラズパイのIPアドレス:/home/pi/Music
 
 ### 自動実行設定
 以下のサイトを参考  
-https://rikoubou.hatenablog.com/entry/2020/09/18/165936  
-ファイルの最後の'exit 0'の前に以下を記述
+https://qiita.com/molchiro/items/ee32a11b81fa1dc2fd8d
+
+1. 自動起動するプログラムを置く、ディレクトの作成
 ```
-$ sudo nano /etc/rc.local
---------------------------------------------
-python3 /home/pi/Lab_attendance/Labo_attendance/Card_reader/16_321/main.py #追加部分
+$ sudo mkdir /opt/Lab_attendance
 ```
-記述できたら上書き保存し、Raspberry Piを再起動
+
+2. プログラムの作成
+作業ディレクトリを移動
+```
+$ cd /opt/Lab_attendance
+```
+自動起動するプログラムを作成
+/home/pi/Lab_attendance/Labo_attendance/Card_reader/のプログラムをコピペ
+```
+$ sudo nano 作成するプログラム(6個)
+```
+
+3. serviceファイルを作成
+.service ファイルを/etc/systemd/systemに作る
+```
+$ sudo nano /etc/systemd/system/Lab_attendance.service
+```
+ファイルの中身
+```
+[Unit]
+Description=start Lab_attendance system
+After=network.target mysqld.service
+
+[Service]
+ExecStart=/usr/bin/python3 main.py
+WorkingDirectory=/opt/Lab_attendance
+User=root
+
+[Install]
+WantedBy=multi-user.target
+```
+4. serviceファイルをenable
+```
+$ sudo systemctl enable Lab_attendance.service
+```
+rebootして確認
 
 <br />
 
