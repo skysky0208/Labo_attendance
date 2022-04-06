@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+import sys
+sys.path.insert(0,"/home/pi/.local/lib/python3.7/site-packages")
 import pymysql.cursors
 import nit_reader
 import play
