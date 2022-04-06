@@ -144,24 +144,22 @@ https://qiita.com/molchiro/items/ee32a11b81fa1dc2fd8d
 $ sudo mkdir /opt/Lab_attendance
 ```
 
-2. プログラムの作成
-作業ディレクトリを移動
+2. 自動起動するプログラムの作成  
 ```
 $ cd /opt/Lab_attendance
+``` 
+
 ```
-自動起動するプログラムを作成
-/home/pi/Lab_attendance/Labo_attendance/Card_reader/のプログラムをコピペ
-```
+# /home/pi/Lab_attendance/Labo_attendance/Card_reader/のプログラムをコピペ
 $ sudo nano 作成するプログラム(6個)
 ```
 
-3. serviceファイルを作成
-.service ファイルを/etc/systemd/systemに作る
+3. serviceファイルを作成  
 ```
 $ sudo nano /etc/systemd/system/Lab_attendance.service
 ```
-ファイルの中身
-```
+
+```Lab_attendance.service
 [Unit]
 Description=start Lab_attendance system
 After=network.target mysqld.service
@@ -178,7 +176,7 @@ WantedBy=multi-user.target
 ```
 $ sudo systemctl enable Lab_attendance.service
 ```
-rebootして確認
+5. rebootして確認
 
 <br />
 
