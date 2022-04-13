@@ -18,3 +18,31 @@ class CommentUpdateForm(forms.ModelForm):
         model = LabAttendanceTb
         # 入力するカラムを指定
         fields = ('comment',) 
+
+# 検索フォーム
+class SearchForm(forms.Form):
+
+    STATUS_CHOICES = (
+        ('', ''),
+        ('attend', '出席'),
+        ('absent', '退席'),
+        ('lab out', '外出'),
+    )
+
+    user_id = forms.IntegerField(
+        initial='',
+        label='学籍番号',
+        required = False, # 必須ではない
+    )
+
+    user_name = forms.CharField(
+        initial='',
+        label='名前',
+        required = False, # 必須ではない
+    )
+
+    status = forms.fields.ChoiceField(
+        choices=STATUS_CHOICES,
+        label='出席状況',
+        required = False,  # 必須ではない
+    )

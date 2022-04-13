@@ -24,4 +24,8 @@ class LabAttendanceTb(models.Model):
 
     # 自分自身を呼び出されたとき学籍番号を返す
     def __str__(self):
-        return str(self.user_id) 
+        return str(self.user_id)
+
+    @staticmethod
+    def get_absolute_url(self):
+        return reverse('search:index') 
