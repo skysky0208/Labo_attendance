@@ -4,7 +4,9 @@ from django.urls import reverse_lazy
 from .forms import UserCreateForm
 from .forms import CommentUpdateForm
 from .forms import SearchForm
+from .forms import FingerprintCreateForm
 from .models import LabAttendanceTb
+from .models import LabFingerprintTb
 from django.db.models import Q
 
 # Create your views here.
@@ -22,6 +24,14 @@ class UserCreateView(generic.CreateView):
     model = LabAttendanceTb
     form_class = UserCreateForm
     template_name = 'attendance/user_create.html'
+    # ユーザ作成成功時のリダイレクト先
+    success_url = reverse_lazy('attendance:attendance_list')
+
+# 指紋登録画面
+class FingerprintCreateView(generic.CreateView):
+    model = LabFingerprintTb
+    form_class = FingerprintCreateForm
+    template_name = 'attendance/fingerprint_create.html'
     # ユーザ作成成功時のリダイレクト先
     success_url = reverse_lazy('attendance:attendance_list')
 

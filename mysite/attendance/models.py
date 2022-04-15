@@ -29,3 +29,15 @@ class LabAttendanceTb(models.Model):
     @staticmethod
     def get_absolute_url(self):
         return reverse('search:index') 
+
+
+class LabFingerprintTb(models.Model):
+    finger_id = models.IntegerField(primary_key=True)
+    user_id = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Lab_fingerprint_tb'
+
+    def __str__(self):
+        return "【"+ str(self.finger_id) + "】　" + str(self.user_id)

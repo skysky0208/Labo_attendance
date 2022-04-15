@@ -1,5 +1,6 @@
 from django import forms
 from .models import LabAttendanceTb
+from .models import LabFingerprintTb
 
 # 入力画面に関するクラスを定義
 
@@ -10,6 +11,14 @@ class UserCreateForm(forms.ModelForm):
         model = LabAttendanceTb
         # 入力するカラムを指定
         fields = ('user_id', 'user_name', 'room_id', 'calendar_id') 
+
+# 指紋登録フォーム
+class FingerprintCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = LabFingerprintTb
+        # 入力するカラムを指定
+        fields = ('finger_id', 'user_id')
 
 # コメント編集フォーム
 class CommentUpdateForm(forms.ModelForm):
