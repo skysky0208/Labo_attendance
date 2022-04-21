@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/fingerprint_create.css' %}">
+
+<div class="fingerprint_create">
+<form action="" method="POST">
+    <table class="table table-borderless">
+        <tr>
+            <td>指紋番号</td>
+            <td>{{ form.finger_id }}</td>
+        </tr>
+        <tr>
+            <td>学籍番号</td>
+            <td>{{ form.user_id }}</td>
+    </table>
+    <div class="button_wrapper" align="right">
+        <button type="submit" class="btn btn-dark" >登録</button>
+        {% csrf_token %}
+    </div>
+</form>
+</div>
+
+{% endblock %}

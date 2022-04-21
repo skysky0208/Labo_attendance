@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/attendance_list.css' %}">
+
+<div class="attend_info">
+
+    <table class="table table-hover">
+    <thead>
+        <tr>
+            <th>学籍番号</th>
+            <th>名前</th>
+            <th>部屋番号</th>
+            <th>状態</th>
+            <th>コメント</th>
+            <th></th>
+            <th>最終更新日時</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in labattendancetb_list %}
+            {% if i.status == "attend" %}
+                <tr>
+                    <td>{{ i.user_id }}</td>
+                    <td>{{ i.user_name }}</td>
+
+                    {% if i.room_id is None %} <td></td>
+                    {% else %} <td>{{ i.room_id }}</td>
+                    {% endif %}
+
+                    <td>在室</td>
+
+                    {% if i.comment is None %} <td></td>
+                    {% else %} <td>{{ i.comment }}</td>
+                    {% endif %}
+
+                    <td>
+                        <a href="{% url 'attendance:comment_update' i.pk %}" class="btn btn-outline-secondary py-0" role="button" style="color:#4b6d6e; border-color: #4b6d6e" >
+                            編集
+                        </a>
+                    </td>
+                    <td>{{ i.update_time }}</td>
+                </tr>
+            {% else %}
+                <tr class="gray-backend">
+                    <td>{{ i.user_id }}</td>
+                    <td>{{ i.user_name }}</td>
+
+                    {% if i.room_id is None %} <td></td>
+                    {% else %} <td>{{ i.room_id }}</td>
+                    {% endif %}
+
+                    {% if i.status == "lab out" %} <td>外出</td>
+                    {% elif i.status == "absent" %} <td>退室</td>
+                    {% else %} <td></td>
+                    {% endif %}
+
+                    {% if i.comment is None %} <td></td>
+                    {% else %} <td>{{ i.comment }}</td>
+                    {% endif %}
+
+                    <td>
+                        <a href="{% url 'attendance:comment_update' i.pk %}" class="btn btn-outline-secondary py-0" role="button" style="color:#4b6d6e; border-color: #4b6d6e" >
+                            編集
+                        </a>
+                    </td>
+                    <td>{{ i.update_time }}</td>
+                </tr>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

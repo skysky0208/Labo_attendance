@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% load widget_tweaks %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/comment_update.css' %}">
+
+<div class="comment_update">
+<form action="" method="POST">
+    <table class="table table-borderless">
+        <tr>
+            <td>コメント</td>
+            <td>{{ form.comment|add_class:"imput_box" }}</td>
+        </tr>
+    </table>
+    <div class="button_wrapper" align="right">
+        <button type="submit" class="btn btn-dark" >登録</button>
+        {% csrf_token %}
+    </div>
+</form>
+</div>
+
+{% endblock %}

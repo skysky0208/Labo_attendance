@@ -1,0 +1,28 @@
+h2 {
+    margin: 30px 50px 10px 10px;
+    color: #4b6d6e;
+    border-bottom: solid 3px #4b6d6e;
+}
+
+.serch_condition {
+    margin: 20px 50px 10px 30px;
+}
+
+.button_wrapper {
+    padding: 0px 100px 0px 0px;
+}
+
+.serch_result {
+    margin: 20px 60px 10px 20px;
+    padding: 0px 0px 10px 0px;
+}
+
+
+.table > thead > tr{
+    border:2px solid #a5bdb3;
+    background-color: #c7d2cd;
+}
+
+.table > tbody > tr{
+    border:2px solid #d1d0d0;
+}
