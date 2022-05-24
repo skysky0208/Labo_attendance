@@ -135,6 +135,8 @@ $ scp success.wav pi@ラズパイのIPアドレス:/home/pi/Music
 ```
 <br />
 
+## RaspberryPi関連
+
 ### 自動実行設定
 以下のサイトを参考  
 https://qiita.com/molchiro/items/ee32a11b81fa1dc2fd8d
@@ -177,7 +179,33 @@ WantedBy=multi-user.target
 $ sudo systemctl enable Lab_attendance.service
 ```
 5. rebootして確認
+<br />
 
+### タイムスケジューラcron
+1. cronの動作確認
+```
+sudo /etc/init.d/cron status
+```
+2. cronの設定
+```
+sudo cp /etc/crontab /etc/cron.d/cron_test
+sudo vi /etc/cron.d/cron_test 
+========================================
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+(例)
+0 0 * * 6 root python3 /home/pi/Lab_attendance/Labo_attendance/mysite/manage.py report_mail
+```
+3. cronの再起動
+```
+sudo service cron restart
+```
 <br />
 
 ## Requirement
