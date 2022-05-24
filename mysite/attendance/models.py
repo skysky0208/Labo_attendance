@@ -53,3 +53,17 @@ class LabTips(models.Model):
 
     def __str__(self):
         return str(self.num) + "：" + str(self.image)
+
+class LabReport(models.Model):
+    student_id = models.IntegerField(blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    enter_time = models.TimeField(blank=True, null=True)
+    staytime = models.IntegerField(blank=True, null=True)
+    count = models.AutoField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Lab_report'
+
+    def __str__(self):
+        return str(self.count)
