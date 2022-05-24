@@ -8,9 +8,41 @@ from .forms import FingerprintCreateForm
 from .models import LabAttendanceTb
 from .models import LabFingerprintTb
 from .models import LabAttendanceInfo
+from .models import EnterInfo
+from .models import LabTips
 from django.db.models import Q
+import random
+import json
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from datetime import date,timedelta
+
+# 秒 to 時間・分
+def get_h_m(td):
+    m, s = divmod(td, 60)
+    h, m = divmod(m, 60)
+    return int(h), int(m)
+
+# 平均入室時間(秒)算出
+def avarage_enter_time(query):
+    total_enter_timestamp = 0
+
+    for i in range(query.count()) :
+        timestamp = timedelta(
+            hours=query[i].enter_time.hour,
+            minutes=query[i].enter_time.minute,
+            seconds=query[i].enter_time.second
+        ).total_seconds()
+        total_enter_timestamp = total_enter_timestamp + timestamp
+        
+    if (total_enter_timestamp != 0):
+        avarage_enter_timestamp = total_enter_timestamp / query.count()
+    else :
+        avarage_enter_timestamp = 0
+
+    return avarage_enter_timestamp
+    
 
 # Create your views here.
 # どのhtmlで出力するかの指定
@@ -21,6 +53,44 @@ class IndexView(generic.TemplateView):
 class AttendanceListView(generic.ListView):
     model = LabAttendanceTb
     template_name = 'attendance/attendance_list.html'
+
+    # def get_context_data(self, **kwargs):
+    #     model_list = LabAttendanceTb.objects.all()
+
+    #     today = date.today()
+    #     td = timedelta(days=1)
+    #     yesterday = today - td
+
+    #     query = EnterInfo.objects.filter(
+    #         date = yesterday
+    #     )
+
+    #     yesterday_enter_timestamp = avarage_enter_time(query)
+    #     yesterday_enter_hour, yesterday_enter_minute = get_h_m(yesterday_enter_timestamp)
+
+    #     context = {
+    #         'labattendancetb_list': model_list,
+    #         'enter_hour': yesterday_enter_hour,
+    #         'enter_minute': yesterday_enter_minute
+    #     }
+    #     return context
+
+    def get_context_data(self, **kwargs):
+        model_list = LabAttendanceTb.objects.all()
+
+        tips_list = LabTips.objects.all()
+        tips_size = tips_list.count()
+        random_num = random.randint(1, tips_size)
+
+        query = LabTips.objects.get(pk = random_num)
+
+        context = {
+            'labattendancetb_list': model_list,
+            'image_name': "img/" + query.image,
+            'text': query.sentence,
+        }
+        return context
+
 
 # ユーザ登録画面
 class UserCreateView(generic.CreateView):
@@ -109,10 +179,8 @@ class SearchView(generic.ListView):
 
 class AnalyticsView(generic.TemplateView):
     template_name = 'attendance/analytics.html'
-    model = LabAttendanceInfo
 
-    def get_data(request):
-        sample_id = 31114153
+    def get(self, request, **kwargs):
         today = date.today()
         td = timedelta(days=30)
         month_ago = today - td
@@ -121,18 +189,20 @@ class AnalyticsView(generic.TemplateView):
         data = []
         
         for i in range(30):
-            query = LabAttendanceInfo.objects.filter(
-                student_id = sample_id,
-                year = count_month_ago.year,
-                month = count_month_ago.month,
-                day = count_month_ago.day,
+            query = EnterInfo.objects.filter(
+                date = count_month_ago
             )
             label.append(str(count_month_ago.month) + "月" + str(count_month_ago.day) + "日")
             if query.first() is None:
-                data.append(0)
+                data.append(None)
             else:
-                data.append(query[0].staytime)
+                analytics_enter_timestamp = avarage_enter_time(query)
+                analytics_enter_hour, analytics_enter_minute = get_h_m(analytics_enter_timestamp)
+                data.append(str(analytics_enter_hour) + ":" + str(analytics_enter_minute))
             count_month_ago = count_month_ago + timedelta(days=1)
-        
-        return render(request, 'attendance/analytics.html', {'user_id':sample_id, 'label':label, 'data':data})
 
+        context = {
+            'label':label,
+            'data':json.dumps(data)
+        }
+        return self.render_to_response(context)

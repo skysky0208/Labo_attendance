@@ -1,66 +1,60 @@
+{% extends "base.html" %}
+{% block body %}
+
 {% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>bar chart</title>
-    <script src="{% static 'node_modules/chart.js/dist/chart.js' %}"></script>
-  </head>
-  <body>
-    <canvas id="chart"></canvas>
-    あ
-    {{ label | safe }}
-    {{ data | safe }}
-    {{ user_id | safe }}
-    お
-    <script>
-        const ctx = document.getElementById('chart');
-        // l = {{ label }};
-        // d = {{ date }};
-        // const chart = new Chart(ctx, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: label ,
-        //         datasets: [{
-        //             label: "{{ user_id }}" ,
-        //             data: data ,
-        //             backgroundColor: [
-        //             ],
-        //             borderColor: [
+<script src="{% static 'node_modules/chart.js/dist/chart.js' %}"></script>
+<script src="{% static 'node_modules/chart.js/dist/chart.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/moment@2.29.1,npm/chartjs-adapter-moment@1.0.0"></script>
+<link rel="stylesheet" href="{% static 'css/analytics.css' %}">
 
-        //             ],
-        //             borderWidth: 1
-        //         }]
-        //     }
-        // })
-
-        const chart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-              datasets: [{
-                  label: '# of Votes',
-                  data: [12, 19, 3, 5, 2, 3],
-                  backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                      'rgba(153, 102, 255, 0.2)',
-                      'rgba(255, 159, 64, 0.2)'
-                  ],
-                  borderColor: [
-                      'rgba(255, 99, 132, 1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
-                      'rgba(75, 192, 192, 1)',
-                      'rgba(153, 102, 255, 1)',
-                      'rgba(255, 159, 64, 1)'
-                  ],
-                  borderWidth: 1
-              }]
+<div class="attend_chart">
+  <h2>  過去30日間 の 平均出席時間</h2>
+  <canvas id="chart"></canvas>
+  <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: {{ label | safe }} ,
+        datasets: [{
+          data: {{ data | safe }},
+          backgroundColor: [
+            '#75998a'
+          ],
+          borderColor: [
+            '#75998a'
+          ],
+          borderWidth: 1, 
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            scaleLabel: {
+              display: true,
+              labelString: '時間'
+            },
+            type : 'time',
+            time : {
+              parser: 'HH:mm',
+              unit : 'hour',
+              StepSize : 1,
+              min: '09:00',
+              max: '17:00',
+              displayFormats : {
+                'hour' : 'HH:mm'
+              },
+            },
           }
-        })
-    </script>
-  </body>
-</html>
+        },
+        plugins: {
+          legend : {// 凡例の非表示
+            display : false
+          }
+        },
+      },
+    })
+  </script>
+</div>
+
+{% endblock %}

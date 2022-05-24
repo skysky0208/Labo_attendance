@@ -57,3 +57,28 @@ class LabAttendanceInfo(models.Model):
 
     def __str__(self):
         return str(self.info_count)
+
+class EnterInfo(models.Model):
+    student_id = models.IntegerField(primary_key=True)
+    date = models.DateField()
+    enter_time = models.TimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'enter_info'
+        unique_together = (('student_id', 'date'),)
+
+    def __str__(self):
+        return "【"+ str(self.student_id) + "】　" + str(self.date)
+
+class LabTips(models.Model):
+    sentence = models.TextField(db_column='Sentence', blank=True, null=True)  # Field name made lowercase.
+    image = models.CharField(db_column='Image', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    num = models.AutoField(db_column='Num', primary_key=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Lab_tips'
+
+    def __str__(self):
+        return str(self.num) + "：" + str(self.image)
