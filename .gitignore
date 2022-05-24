@@ -1,4 +1,5 @@
 /Regularly_update/credentials.json
+/mysite/mysite/mysite_config.py
 
 *.log
 *.pyc
