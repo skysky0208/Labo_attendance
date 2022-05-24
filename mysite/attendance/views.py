@@ -7,8 +7,6 @@ from .forms import SearchForm
 from .forms import FingerprintCreateForm
 from .models import LabAttendanceTb
 from .models import LabFingerprintTb
-from .models import LabAttendanceInfo
-from .models import EnterInfo
 from .models import LabTips
 from django.db.models import Q
 import random
@@ -18,64 +16,13 @@ from django.dispatch import receiver
 
 from datetime import date,timedelta
 
-# 秒 to 時間・分
-def get_h_m(td):
-    m, s = divmod(td, 60)
-    h, m = divmod(m, 60)
-    return int(h), int(m)
-
-# 平均入室時間(秒)算出
-def avarage_enter_time(query):
-    total_enter_timestamp = 0
-
-    for i in range(query.count()) :
-        timestamp = timedelta(
-            hours=query[i].enter_time.hour,
-            minutes=query[i].enter_time.minute,
-            seconds=query[i].enter_time.second
-        ).total_seconds()
-        total_enter_timestamp = total_enter_timestamp + timestamp
-        
-    if (total_enter_timestamp != 0):
-        avarage_enter_timestamp = total_enter_timestamp / query.count()
-    else :
-        avarage_enter_timestamp = 0
-
-    return avarage_enter_timestamp
-    
-
-from datetime import date,timedelta
-
 # Create your views here.
 # どのhtmlで出力するかの指定
-class IndexView(generic.TemplateView):
-    template_name = 'attendance/index.html'
-
 # 出席情報画面
 class AttendanceListView(generic.ListView):
     model = LabAttendanceTb
     template_name = 'attendance/attendance_list.html'
 
-    # def get_context_data(self, **kwargs):
-    #     model_list = LabAttendanceTb.objects.all()
-
-    #     today = date.today()
-    #     td = timedelta(days=1)
-    #     yesterday = today - td
-
-    #     query = EnterInfo.objects.filter(
-    #         date = yesterday
-    #     )
-
-    #     yesterday_enter_timestamp = avarage_enter_time(query)
-    #     yesterday_enter_hour, yesterday_enter_minute = get_h_m(yesterday_enter_timestamp)
-
-    #     context = {
-    #         'labattendancetb_list': model_list,
-    #         'enter_hour': yesterday_enter_hour,
-    #         'enter_minute': yesterday_enter_minute
-    #     }
-    #     return context
 
     def get_context_data(self, **kwargs):
         model_list = LabAttendanceTb.objects.all()
@@ -178,40 +125,3 @@ class SearchView(generic.ListView):
         else:
             # 何も返さない
             return LabAttendanceTb.objects.none()
-
-class AnalyticsView(generic.TemplateView):
-    template_name = 'attendance/analytics.html'
-<<<<<<< HEAD
-
-    def get(self, request, **kwargs):
-=======
-    model = LabAttendanceInfo
-
-    def get_data(request):
-        sample_id = 31114153
->>>>>>> fdde787cd6883188c0cee6275058e375c72d5dc1
-        today = date.today()
-        td = timedelta(days=30)
-        month_ago = today - td
-        count_month_ago = month_ago
-        label = []
-        data = []
-        
-        for i in range(30):
-            query = EnterInfo.objects.filter(
-                date = count_month_ago
-            )
-            label.append(str(count_month_ago.month) + "月" + str(count_month_ago.day) + "日")
-            if query.first() is None:
-                data.append(None)
-            else:
-                analytics_enter_timestamp = avarage_enter_time(query)
-                analytics_enter_hour, analytics_enter_minute = get_h_m(analytics_enter_timestamp)
-                data.append(str(analytics_enter_hour) + ":" + str(analytics_enter_minute))
-            count_month_ago = count_month_ago + timedelta(days=1)
-
-        context = {
-            'label':label,
-            'data':json.dumps(data)
-        }
-        return self.render_to_response(context)
