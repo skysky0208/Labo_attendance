@@ -44,6 +44,8 @@ def avarage_enter_time(query):
     return avarage_enter_timestamp
     
 
+from datetime import date,timedelta
+
 # Create your views here.
 # どのhtmlで出力するかの指定
 class IndexView(generic.TemplateView):
@@ -179,8 +181,15 @@ class SearchView(generic.ListView):
 
 class AnalyticsView(generic.TemplateView):
     template_name = 'attendance/analytics.html'
+<<<<<<< HEAD
 
     def get(self, request, **kwargs):
+=======
+    model = LabAttendanceInfo
+
+    def get_data(request):
+        sample_id = 31114153
+>>>>>>> fdde787cd6883188c0cee6275058e375c72d5dc1
         today = date.today()
         td = timedelta(days=30)
         month_ago = today - td
