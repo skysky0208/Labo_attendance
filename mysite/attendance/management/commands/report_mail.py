@@ -45,32 +45,14 @@ class Command(BaseCommand):
         startdatetime = enddatetime - timedelta(days=4)
         reports = LabReport.objects.filter(date__range=[startdatetime.date(), enddatetime.date()])
 
-        ###############
+        users = LabAttendanceTb.objects.all()
 
-        # users = LabAttendance.objects.all()
-
-        # for i in range(users.count()):
-        #     user_address = users[i].email_address
-        #     user_id = users[i].user_id
-
-        #     subject = "今週の研究室出席レポート"
-        #     message = make_report(reports, user_id)
-        #     from_mail = []
-        #     recipient = [settings.EMAIL_HOST_USER]
-        #     send_mail(subject, massege, from_mail, recipient)
-
-        ###############
-
-        mails = ["31114153@stn.nitech.ac.jp"]
-        users = [31114153]
-        
-        for i in range(len(mails)):
-            user_address = mails[i]
-            user_id = users[i]
+        for i in range(users.count()):
+            user_address = users[i].mail
+            user_id = users[i].user_id
 
             subject = "今週の研究室出席レポート"
             message = make_report(reports, user_id)
             from_mail = settings.EMAIL_HOST_USER
             recipient = [user_address]
             send_mail(subject, message, from_mail, recipient)
-            print("送信しました．")

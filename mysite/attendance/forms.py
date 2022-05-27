@@ -10,7 +10,7 @@ class UserCreateForm(forms.ModelForm):
     class Meta:
         model = LabAttendanceTb
         # 入力するカラムを指定
-        fields = ('user_id', 'user_name', 'room_id', 'calendar_id') 
+        fields = ('user_id', 'user_name', 'room_id', 'mail' , 'calendar_id') 
 
 # 指紋登録フォーム
 class FingerprintCreateForm(forms.ModelForm):
@@ -55,3 +55,4 @@ class SearchForm(forms.Form):
         label='出席状況',
         required = False,  # 必須ではない
     )
+    
