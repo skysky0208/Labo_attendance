@@ -1,5 +1,6 @@
 /Regularly_update/credentials.json
 /mysite/mysite/mysite_config.py
+/mysite/attendance/management/commands/credentials.json
 
 *.log
 *.pyc
