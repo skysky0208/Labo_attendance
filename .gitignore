@@ -2,6 +2,10 @@
 /mysite/mysite/mysite_config.py
 /mysite/attendance/management/commands/credentials.json
 
+/mysite/static/graph/
+/mysite/static/report/
+/mysite/static/font_data/
+
 *.log
 *.pyc
 __pycache__/

@@ -1,0 +1,5 @@
+【平均入室時間】
+今週：{{ thisweek_enter }}
+
+【合計在室時間】
+今週：{{ thisweek_stay }}
