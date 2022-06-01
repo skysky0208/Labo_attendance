@@ -15,14 +15,67 @@
     border:2px solid #d1d0d0;
 }
 
-.gray-backend {
-    background-color: #d1d0d0;
+.table td{
+    vertical-align: middle;
+    padding: 10px 5px;
+}
+
+.default{
+    width: 150px;
+    text-align: center;
+    font-size: 18px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gray_badge {
+    padding: 7px 0px;
+    background-color: #a1a1a1;
+    color: #f8f7ea;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.attend_badge {
+    padding: 7px 0px;
+    background-color: #688a7c;
+    color: #f8f7ea;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.absent_badge {
+    padding: 7px 0px;
+    background-color: #7e6f66;
+    color: #f8f7ea;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.labout_badge {
+    padding: 7px 0px;
+    background-color: #5784a9;
+    color: #f8f7ea;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tip{
-    margin:0px 100px 0px 100px;
+    margin:0px 180px 0px 180px;
     padding: 0px 0px 0px 0px;
-    background-color: #97b4a8;
+    background-color: #a7c0b6;
     border-radius: 20px;
     position: relative;
 }

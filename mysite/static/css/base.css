@@ -8,12 +8,18 @@
 
 body {
     background-color: #ebeadb;
+    font-size: 1.1em;
+    text-align: center;
 }
 
-.container{
+.container-fluid{
     padding: 0px 0px 20px 0px;
     background-color: #f8f7ea;
     border-radius: 20px;
+}
+
+.maxsize{
+    max-width: 1500px;
 }
 
 .navbar{

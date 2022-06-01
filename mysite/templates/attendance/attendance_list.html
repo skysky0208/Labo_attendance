@@ -11,25 +11,21 @@
         <tr>
             <th>学籍番号</th>
             <th>名前</th>
-            <th>部屋番号</th>
-            <th>状態</th>
             <th>コメント</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th></th>
             <th>最終更新日時</th>
         </tr>
     </thead>
     <tbody>
         {% for i in labattendancetb_list %}
-            {% if i.status == "attend" %}
-                <tr>
-                    <td>{{ i.user_id }}</td>
-                    <td>{{ i.user_name }}</td>
-
-                    {% if i.room_id is None %} <td></td>
-                    {% else %} <td>{{ i.room_id }}</td>
-                    {% endif %}
-
-                    <td>在室</td>
+            <tr>
+                <td>{{ i.user_id }}</td>
+                <td><div class="default">{{ i.user_name }}</div></td>
 
                     {% if i.comment is None %} <td></td>
                     {% else %} <td>{{ i.comment }}</td>
@@ -40,35 +36,39 @@
                             編集
                         </a>
                     </td>
+
+                    {% if i.status == "attend" and i.room_id == "16_421" %}
+                        <td><div class="attend_badge">421号室</div></td>
+                    {% else %}
+                        <td><div class="gray_badge">421号室</div></td>
+                    {% endif %}
+
+                    {% if i.status == "attend" and i.room_id == "16_422" %}
+                        <td><div class="attend_badge">422号室</span></td>
+                    {% else %}
+                        <td><div class="gray_badge">422号室</div></td>
+                    {% endif %}
+
+                    {% if i.status == "attend" and i.room_id == "16_321" %}
+                        <td><div class="attend_badge">工作室</span></td>
+                    {% else %}
+                        <td><div class="gray_badge">工作室</div></td>
+                    {% endif %}
+
+                    {% if i.status == "lab_out" %}
+                        <td><div class="labout_badge">外出</div></td>
+                    {% else %}
+                        <td><div class="gray_badge">外出</div></td>
+                    {% endif %}
+
+                    {% if i.status == "absent" %}
+                        <td><div class="absent_badge">退席</div></td>
+                    {% else %}
+                        <td><div class="gray_badge">退席</div></td>
+                    {% endif %}
+
                     <td>{{ i.update_time }}</td>
-                </tr>
-            {% else %}
-                <tr class="gray-backend">
-                    <td>{{ i.user_id }}</td>
-                    <td>{{ i.user_name }}</td>
-
-                    {% if i.room_id is None %} <td></td>
-                    {% else %} <td>{{ i.room_id }}</td>
-                    {% endif %}
-
-                    {% if i.status == "lab out" %} <td>外出</td>
-                    {% elif i.status == "absent" %} <td>退室</td>
-                    {% else %} <td></td>
-                    {% endif %}
-
-                    {% if i.comment is None %} <td></td>
-                    {% else %} <td>{{ i.comment }}</td>
-                    {% endif %}
-
-                    <td>
-                        <a href="{% url 'attendance:comment_update' i.pk %}" class="btn btn-outline-secondary py-0" role="button" style="color:#4b6d6e; border-color: #4b6d6e" >
-                            編集
-                        </a>
-                    </td>
-                    <td>{{ i.update_time }}</td>
-                </tr>
-            {% endif %}
-        </tr>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
