@@ -200,7 +200,8 @@ sudo vi /etc/cron.d/cron_test
 # |  |  |  |  |
 # *  *  *  *  * user-name command to be executed
 (例)
-0 0 * * 6 root python3 /home/pi/Lab_attendance/Labo_attendance/mysite/manage.py report_mail
+0 0 * * 0 root python3 /home/pi/Lab_attendance/Labo_attendance/mysite/manage.py report_mail
+0 0 * * * root python3 /home/pi/Lab_attendance/Labo_attendance/mysite/manage.py data_reset
 ```
 3. cronの再起動
 ```
