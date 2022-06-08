@@ -106,7 +106,7 @@ MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL P
 - calendar_id (Char[100]) : カレンダー連携のためのID
 <br />
 
-## Speaker・CardReader
+## Speaker
 ### 初期設定
 1. simpleaudioライブラリ，nfcpyライブラリのインストール
 ```
@@ -134,6 +134,16 @@ $ scp error.wav pi@ラズパイのIPアドレス:/home/pi/Music
 $ scp success.wav pi@ラズパイのIPアドレス:/home/pi/Music
 ```
 <br />
+
+## Report機能導入
+```
+$ python3 -m pip install --upgrade pip setuptools
+$ pip3 install reportlab
+$ pip3 install matplotlib
+$ pip3 install pandas
+$ pip3 install numpy
+$ pip3 install japanize_matplotlib
+```
 
 ## RaspberryPi関連
 
@@ -218,7 +228,13 @@ sudo service cron restart
 * google-auth-httplib2     0.1.0
 * google-auth-oauthlib     0.4.1
 * nfcpy     1.0.3 
-* simpleaudio   1.0.4 
+* simpleaudio   1.0.4
+* setuptools     62.3.2
+* reportlab     3.5.13
+* matplotlib     3.5.2
+* pandas        1.3.5
+* numpy         1.21.6
+* japanize_matplotlib
 
 
 # commit rule
