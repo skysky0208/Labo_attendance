@@ -95,8 +95,8 @@ MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL P
 ```
 作成したテーブルの詳細は以下を参照
 
-### データベース（Lab_attendance_tb）
-データベースのテーブルはuser_id, user_name, status, update_time, room_id, comment, calendar_id で構成
+### Lab_attendance_tb
+Lab_attendance_tbはuser_id, user_name, status, update_time, room_id, comment, calendar_id で構成
 - user_id (Integer) : 学籍番号 (プライマリキー)
 - user_name (Char[100]) : 名前
 - status (Char[100]) : 入室、退室、外出の状態
@@ -104,6 +104,26 @@ MariaDB [Lab_attendance]> CREATE TABLE Lab_attendance_tb (user_id INT NOT NULL P
 - room_id (Char[100]) : 入室している部屋番号
 - comment (Text): 自由に設定できるコメント
 - calendar_id (Char[100]) : カレンダー連携のためのID
+- mail (Char[100]) : レポートを送信するためのメールアドレス
+
+### Lab_fingerprint_tb
+Lab_fingerprint_tbはfinger_id, user_id で構成
+- finger_id (Integer) : 指紋登録番号 (プライマリキー)
+- user_id (Integer) : 学籍番号
+
+### Lab_report
+Lab_reportはstudent_id, date, enter_time, staytime, count で構成
+- student_id (Integer) : 学籍番号
+- date (Date) : 日付
+- enter_time (Time) : 入室時刻
+- staytime (Integer): 滞在時間(分)
+- count (Integer) : 管理番号 (プライマリキー,オートインクリメント)
+
+### Lab_tips
+Lab_tipsはSentence, Image, Num で構成
+- Sentence (Text) : 説明文
+- Image (Char[100]) : 画像ファイル名
+- Num  (Integer) : 管理番号 (プライマリキー,オートインクリメント)
 <br />
 
 ## Speaker
@@ -163,6 +183,8 @@ $ cd /opt/Lab_attendance
 
 ```
 # /home/pi/Lab_attendance/Labo_attendance/Card_reader/のプログラムをコピペ
+$ ls
+ConvertID.py  Data_collection.py  Finger_reader.py  __pycache__  main.py  manage_db.py  play.py  sw.py
 $ sudo nano 作成するプログラム(6個)
 ```
 
@@ -188,7 +210,14 @@ WantedBy=multi-user.target
 ```
 $ sudo systemctl enable Lab_attendance.service
 ```
-5. rebootして確認
+5. コマンドで確認
+```
+$ sudo systemctl start Lab_attendance.service
+```
+5. 再起動
+```
+$ sudo reboot
+```
 <br />
 
 ### タイムスケジューラcron
@@ -235,7 +264,8 @@ sudo service cron restart
 * pandas        1.3.5
 * numpy         1.21.6
 * japanize_matplotlib
-
+* RPi.GPIO 0.7.0
+* pyfingerprint 1.5
 
 # commit rule
 
