@@ -30,10 +30,8 @@ def search_data(student_id,exit_count):
         cursor.execute(sql, student_id)
         match_status = cursor.fetchone()['status']
         
-        # update_timeをtmp_timeとして取得
-        sql = "SELECT DATE_FORMAT(update_time, %s) AS update_time FROM Lab_attendance_tb WHERE user_id = %s"
-        cursor.execute(sql, ('%H%i%s', student_id))
-        tmp_time = cursor.fetchone()['update_time']
+        # 更新前の時間をtmp_timeとして取得
+        tmp_time = Data_collection.get_tmptime(student_id)
 
         # DBにstudent_idが登録されていない場合
         if match_id is None:
@@ -59,19 +57,20 @@ def search_data(student_id,exit_count):
                     cursor.execute(sql, ('16_321', student_id))
                     connection.commit()
                     print("退出->入室\n")
-                    print(tmp_time)
+                    # 初めての入室か判断
+                    Data_collection.collect_data(student_id)
 
                 # 入室から退出に更新
                 elif match_status == 'attend':
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('absent', student_id))
                     connection.commit()
-                    sql = "UPDATE Lab_attendance_tb SET room_id = NULL WHERE user_id = %s"
-                    cursor.execute(sql, student_id)
+                    sql = "UPDATE Lab_attendance_tb SET room_id = %s WHERE user_id = %s"
+                    cursor.execute(sql, (None, student_id))
                     connection.commit()
                     print("入室->退出\n")
-                    #滞在記録を登録
-                    Data_collection.collect_data(student_id,tmp_time)
+                    # 在室時間を計算
+                    Data_collection.calc_staytime(student_id,tmp_time)
 
                 # 一時退出から入室に更新
                 else:
@@ -107,8 +106,8 @@ def search_data(student_id,exit_count):
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('lab out', student_id))
                     connection.commit()
-                    sql = "UPDATE Lab_attendance_tb SET room_id = NULL WHERE user_id = %s"
-                    cursor.execute(sql, student_id)
+                    sql = "UPDATE Lab_attendance_tb SET room_id = %s WHERE user_id = %s"
+                    cursor.execute(sql, (None, student_id))
                     connection.commit()
                     print("入室->一時退出")
 
@@ -116,9 +115,10 @@ def search_data(student_id,exit_count):
                     cursor.execute(sql, '0')
                     connection.commit()
                     print("USED EXIT CARD\n")
-                    #滞在記録を登録
-                    Data_collection.collect_data(student_id,tmp_time)
 
+                    # 在室時間を計算
+                    Data_collection.calc_staytime(student_id,tmp_time)
+            
                 # 一時退出から入室に更新
                 else:
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"

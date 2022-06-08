@@ -10,10 +10,10 @@ import sw
 def fingerprint():
     try:
         positionNumber = Finger_reader.FingerNum()
-        student_id = ConvertID.convert_data(positionNumber)
         exit_count = sw.switch_state()
-        manage_db.search_data(student_id,exit_count)
         play.playsound()
+        student_id = ConvertID.convert_data(positionNumber)
+        manage_db.search_data(student_id,exit_count)
         
     except Exception as e:
         print("Error:%s" % e)
