@@ -40,6 +40,7 @@ def main():
         #学生証を読み取るまで待機
         clf.connect(rdwr={'on-connect': connected,})
 
+
 try:
     main()
 except KeyboardInterrupt:

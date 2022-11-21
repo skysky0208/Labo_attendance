@@ -1,10 +1,10 @@
+
 #!/usr/bin/python3
 import sys
 sys.path.insert(0,"/home/pi/.local/lib/python3.7/site-packages")
 import pymysql.cursors
 import nit_reader
 import play
-
 
 # Connect to the database
 # データベースに接続
@@ -40,6 +40,7 @@ def search_data(student_id,timeout_count):
         if match_id is None:
             print("Error:Unregistered data")
             play.playerrorsound()
+            
         # DBにstudent_idが登録されている場合
         else: 
             # 日時更新
@@ -85,6 +86,7 @@ def search_data(student_id,timeout_count):
                     sql = "UPDATE Lab_attendance_tb SET room_id = NULL WHERE user_id = %s"
                     cursor.execute(sql, student_id)
                     connection.commit()
+
                     print("入室->退出\n")
                 # 一時退出から入室に更新
                 else:
@@ -137,6 +139,7 @@ def search_data(student_id,timeout_count):
                     sql = "UPDATE Lab_attendance_tb SET room_id = %s WHERE user_id = %s"
                     cursor.execute(sql, ('16_321', student_id))
                     connection.commit()
+
                     print("一時退室->入室")
 
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_name = 'EXIT CARD'"

@@ -10,6 +10,7 @@ class UserCreateForm(forms.ModelForm):
     class Meta:
         model = LabAttendanceTb
         # 入力するカラムを指定
+
         fields = ('user_id', 'user_name', 'room_id', 'mail' , 'calendar_id') 
 
 # 指紋登録フォーム

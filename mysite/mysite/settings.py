@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 
     'widget_tweaks',
     'schedule',
-]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
