@@ -1,5 +1,10 @@
+
+#!/usr/bin/python3
+import sys
+sys.path.insert(0,"/home/pi/.local/lib/python3.7/site-packages")
 import pymysql.cursors
 import nit_reader
+import play
 
 # Connect to the database
 # データベースに接続
@@ -13,27 +18,29 @@ connection = pymysql.connect(host='127.0.0.1', # Raspberry PiのIPアドレス�
                              autocommit=False) # オートコミットの設定
                     
 
-def search_data(student_id):
+def search_data(student_id,timeout_count):
     with connection.cursor() as cursor:
         # student_idを探索
         sql = "SELECT user_id FROM Lab_attendance_tb WHERE user_id = %s"
-        # student_idをmatch_idとする
+        # student_idをmatch_idとして取得
         cursor.execute(sql, student_id)
-        match_id = cursor.fetchone()
+        match_id = cursor.fetchone()['user_id']
 
-        # statusをmatch_statusとする
+        # statusをmatch_statusとして取得
         sql = "SELECT status FROM Lab_attendance_tb WHERE user_id = %s"
         cursor.execute(sql, student_id)
-        match_status = cursor.fetchone()
+        match_status = cursor.fetchone()['status']
 
-        # user_nameをmatch_nameとする
+        # user_nameをmatch_nameとして取得
         sql = "SELECT user_name FROM Lab_attendance_tb WHERE user_id = %s"
         cursor.execute(sql, student_id)
-        match_name = cursor.fetchone()
+        match_name = cursor.fetchone()['user_name']
 
         # DBにstudent_idが登録されていない場合
         if match_id is None:
             print("Error:Unregistered data")
+            play.playerrorsound()
+            
         # DBにstudent_idが登録されている場合
         else: 
             # 日時更新
@@ -41,48 +48,66 @@ def search_data(student_id):
             cursor.execute(sql, student_id)
             connection.commit()
 
-            # 現在日時を取得
-            sql = "SELECT CURTIME()+0;"
-            cursor.execute(sql)
-            up_time = cursor.fetchone()
-            print(up_time)
-
+            # EXIT_CARDのタイムアウト処理
+            if timeout_count == 1:
+                sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_name = 'EXIT CARD'"
+                cursor.execute(sql, '0')
+                connection.commit()
+                print("TIMEOUT EXIT CARD")
+            elif timeout_count == 0:
+                print("AVAILABLE EXIT CARD")
+            
             # EXIT_CARDのstatusを取得
             sql = "SELECT status FROM Lab_attendance_tb WHERE user_name LIKE 'EXIT CARD'"
             cursor.execute(sql)
-            match_type = cursor.fetchone()
-            print(match_name)
-            print(match_type)
+            match_type = cursor.fetchone()['status']
+            if match_name == 'EXIT CARD':
+                print(match_name + "\n")
+            else:
+                print(match_name)
 
             # EXIT_CARDのstatusが0の場合(EXIT_CARD未使用)
-            if match_name != {'user_name': 'EXIT CARD'} and match_type == {'status': '0'}:
+            if match_name != 'EXIT CARD' and match_type == '0':
                 print("---UPDATE DATA---")
                 # 退出から入室に更新
-                if match_status == {'status': 'absent'}:
+                if match_status == 'absent':
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('attend', student_id))
                     connection.commit()
+                    sql = "UPDATE Lab_attendance_tb SET room_id = %s WHERE user_id = %s"
+                    cursor.execute(sql, ('16_321', student_id))
+                    connection.commit()
                     print("退出->入室\n")
                 # 入室から退出に更新
-                elif match_status == {'status': 'attend'}:
+                elif match_status == 'attend':
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('absent', student_id))
                     connection.commit()
+                    sql = "UPDATE Lab_attendance_tb SET room_id = NULL WHERE user_id = %s"
+                    cursor.execute(sql, student_id)
+                    connection.commit()
+
                     print("入室->退出\n")
                 # 一時退出から入室に更新
                 else:
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('attend', student_id))
                     connection.commit()
+                    sql = "UPDATE Lab_attendance_tb SET room_id = %s WHERE user_id = %s"
+                    cursor.execute(sql, ('16_321', student_id))
+                    connection.commit()
                     print("一時退室->入室\n")
 
             # EXIT_CARDのstatusが1の場合(EXIT_CARD使用)
-            elif match_name != {'user_name': 'EXIT CARD'} and match_type == {'status': '1'}:
+            elif match_name != 'EXIT CARD' and match_type == '1':
                 print("---UPDATE DATA---")
                 # 退出から入室に更新
-                if match_status == {'status': 'absent'}:
+                if match_status == 'absent':
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('attend', student_id))
+                    connection.commit()
+                    sql = "UPDATE Lab_attendance_tb SET room_id = %s WHERE user_id = %s"
+                    cursor.execute(sql, ('16_321', student_id))
                     connection.commit()
                     print("退出->入室")
 
@@ -92,9 +117,12 @@ def search_data(student_id):
                     print("USED EXIT CARD\n")
 
                 # 入室から一時退出に更新
-                elif match_status == {'status': 'attend'}:
+                elif match_status == 'attend':
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('lab out', student_id))
+                    connection.commit()
+                    sql = "UPDATE Lab_attendance_tb SET room_id = NULL WHERE user_id = %s"
+                    cursor.execute(sql, student_id)
                     connection.commit()
                     print("入室->一時退出")
 
@@ -108,6 +136,10 @@ def search_data(student_id):
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_id = %s"
                     cursor.execute(sql, ('attend', student_id))
                     connection.commit()
+                    sql = "UPDATE Lab_attendance_tb SET room_id = %s WHERE user_id = %s"
+                    cursor.execute(sql, ('16_321', student_id))
+                    connection.commit()
+
                     print("一時退室->入室")
 
                     sql = "UPDATE Lab_attendance_tb SET status = %s WHERE user_name = 'EXIT CARD'"
